@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Question
+from django.shortcuts import get_list_or_404, render
 
 
 def index(request): #this function is to display the latest five questions for the voter.
@@ -42,12 +43,12 @@ def detail(request, question_id): #this one is to display a specific question
     return HttpResponse("You're looking at question %s." % question_id)
 
 def results(request, question_id): # to display the results to the results html
-    """
-    Display the results of a specific question.
+    """ 
+    Function to display the results for a specific question.
 
     Retrieve the question with the provided ID from the database and 
-    renders its results to the 'polls/results.html' template. If the 
-    question does not exist, an appropriate message is displayed.
+    renders it to the 'polls/results.html' template. If the question does 
+    not exist, an appropriate message is displayed.
 
     Args:
         request: The HTTP request object.
@@ -55,11 +56,10 @@ def results(request, question_id): # to display the results to the results html
 
     Returns:
         HttpResponse: The rendered 'polls/results.html' template with the 
-        requested question results.
+        requested question.
     """
-    
-    response = "You're looking at the results of question %s."
-    return HttpResponse(response % question_id)
+   question = get_object_or_404(Question, pk=question_id)
+    return render(request, "polls/results.html", {"question": question})
 
 def vote(request, question_id): #to handle the voting process, with error handling for when the user does not select a choice
     """
