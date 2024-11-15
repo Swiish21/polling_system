@@ -3,20 +3,34 @@ from django.utils import timezone
 
 # Create your models here.
 class Question(models.Model):
+    """
+    A model representing a question.
+
+    Attributes:
+        question_text (str): The text of the question.
+        pub_date (datetime): The date and time the question was published.
+
+    Methods:
+        __str__: Returns a string representation of the question.
+        was_published_recently: Returns True if the question was published within the last day.
+
+    Admin Interface:
+        The `was_published_recently` method is displayed as a boolean field in the admin interface,
+        with a description of "Published recently" and sorted by publication date.
+    """
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
-    
+
     def __str__(self):
         return self.question_text
-    
+
     @admin.display(
-        boolean = True,
-        ordering = 'pub_date',
-        description = 'Published recently',
+        boolean=True,
+        ordering='pub_date',
+        description='Published recently',
     )
-    
     def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1) 
+        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
 class Choice(models.Model):
     question = models.ForeignKey(Question,
