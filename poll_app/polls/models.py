@@ -6,6 +6,8 @@ Importing necessary modules from Django.
 """
 from django.db import models
 from django.utils import timezone
+from datetime import datetime
+from django.contrib import admin
 
 # Create your models here.
 class Question(models.Model):
